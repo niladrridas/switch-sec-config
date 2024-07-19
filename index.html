@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Switch Configuration and Security</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        code {
+            font-family: "Courier New", Courier, monospace;
+            background-color: #f0f0f0;
+            padding: 2px 4px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #f8f8f8;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Network Switch Configuration and Security</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Project Overview</h2>
+            <p>In the realm of networking, configuring switches and ensuring robust security measures are crucial for maintaining network stability and safeguarding against potential threats. This project focuses on essential configurations including VLAN trunking, spanning tree protocol optimization, and security implementations across a network of switches.</p>
+        </section>
+        
+        <section>
+            <h2>Objective</h2>
+            <p>This project aims to configure network switches (Core1, D-SW1, D-SW2, A-SW1, A-SW2) to enable VLAN trunking, optimize spanning tree protocol settings, and implement critical security measures.</p>
+        </section>
+        
+        <section>
+            <h2>Equipment Required</h2>
+            <ul>
+                <li>Network switches and associated cables</li>
+                <li>Terminal emulation software (e.g., PuTTY)</li>
+                <li>Basic understanding of networking principles and configuration</li>
+            </ul>
+        </section>
+        
+        <section>
+            <h2>Configuration Steps</h2>
+            
+            <h3>Initial Setup and Basic Configuration</h3>
+            <pre>
+Switch> enable
+Switch# configure terminal
+Switch(config)# hostname Core1
+Core1(config)# exit
+            </pre>
+
+            <h3>VLAN Trunking Configuration</h3>
+            <pre>
+Core1(config)# interface range gi0/1
+Core1(config-if)# switchport mode dynamic desirable
+Core1(config-if)# exit
+Core1(config)# interface range gi0/2
+Core1(config-if)# switchport mode dynamic desirable
+Core1(config-if)# exit
+Core1(config)# interface range gi0/1 - 2
+Core1(config-if-range)# switchport mode trunk
+            </pre>
+
+            <h3>Spanning Tree Protocol (STP) Optimization</h3>
+            <pre>
+Core1(config)# spanning-tree vlan 1 root primary
+            </pre>
+
+            <h3>STP Attack Prevention</h3>
+            <pre>
+A-SW1(config)# interface range fa0/1 - 24
+A-SW1(config-if-range)# spanning-tree portfast
+A-SW1(config-if-range)# spanning-tree bpduguard enable
+A-SW1(config-if-range)# exit
+A-SW2(config)# interface range fa0/1 - 24
+A-SW2(config-if-range)# spanning-tree portfast
+A-SW2(config-if-range)# spanning-tree bpduguard enable
+A-SW2(config-if-range)# exit
+            </pre>
+
+            <h3>Broadcast Storm Control</h3>
+            <pre>
+A-SW1(config)# interface gi0/2
+A-SW1(config-if)# storm-control broadcast level 50
+A-SW1(config-if)# exit
+A-SW2(config)# interface gi0/2
+A-SW2(config-if)# storm-control broadcast level 50
+A-SW2(config-if)# exit
+            </pre>
+
+            <h3>Port Security Implementation</h3>
+            <pre>
+A-SW1(config)# interface fa0/1
+A-SW1(config-if)# switchport mode access
+A-SW1(config-if)# switchport port-security
+A-SW1(config-if)# switchport port-security maximum 1
+A-SW1(config-if)# switchport port-security violation shutdown
+A-SW1(config-if)# switchport port-security mac-address sticky
+            </pre>
+        </section>
+
+        <section>
+            <h2>Conclusion</h2>
+            <p>By following these configuration steps, you enhance the stability and security of your network environment. These configurations not only optimize network performance but also safeguard against potential vulnerabilities and unauthorized access attempts. Whether you’re preparing for a certification or improving your network infrastructure, understanding these fundamental configurations is essential in network administration.</p>
+        </section>
+
+        <section>
+            <h2>About the Author</h2>
+            <p>Niladri Das is dedicated to sharing practical knowledge and insights into network administration, cybersecurity, and IT infrastructure management. Visit our blog for more articles and projects to expand your expertise in networking technologies.</p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 CCNA Practise. All rights reserved.</p>
+    </footer>
+</body>
+</html>
